@@ -25,7 +25,7 @@ posts = html_soup.find_all('li', class_='result-row')
 data_arr = []
 posts_lim = len(posts) / 2
    # grabs a post
-for i in range(3):
+for i in range(6):
         post_one = posts[i]
         # print(post_one)
 

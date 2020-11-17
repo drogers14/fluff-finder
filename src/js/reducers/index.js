@@ -7,6 +7,8 @@ IS_FETCHING,
 SUBMIT_PET_ERROR,
 SUBMIT_PET_SUCCESS,
 PET_DATA_LOADED,
+PET_PYTHON_GET,
+PET_ERROR,
  } from "../constants/action-types";
 
 const initialState = {
@@ -17,6 +19,7 @@ const initialState = {
   submitPetSuccess: false,
   submitPetError: false,
   petData: [],
+  petError: false,
 };
 
 function rootReducer(state = initialState, action) {
@@ -43,6 +46,7 @@ function rootReducer(state = initialState, action) {
         signupSuccess: false,
         submitPetSuccess: false, 
         submitPetError: false,
+        petError: false,
     }
   }
   if(action.type === SUBMIT_PET_ERROR){
@@ -53,6 +57,16 @@ function rootReducer(state = initialState, action) {
   }
   if(action.type === PET_DATA_LOADED){
       return { ...state, petData: action.payload, isFetching: false }
+  }
+  if(action.type === PET_PYTHON_GET){
+   var newArray = action.payload;
+  // newArray.push(action.payload);
+   console.log(newArray);
+   //newArray.concat(state.petData)
+    return {...state, petData: newArray, isFetching: false, petError:  false}
+  }
+  if(action.type === PET_ERROR){
+    return{...state, isFetching: false, petError: true}
   }
   return state;
 }

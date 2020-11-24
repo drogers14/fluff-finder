@@ -7,7 +7,9 @@ import {
   SUBMIT_PET_SUCCESS,
   SUBMIT_PET_ERROR,
   PET_DATA_LOADED,
+  PET_PYTHON_GET, PET_ERROR,
 } from "../constants/action-types";
+//const python = require('../../scraperCall.js')
 
 export function getData() {
   return function (dispatch) {
@@ -88,6 +90,7 @@ export function signUp(userinfo) {
 export function getPets(){
   return function (dispatch) {
     dispatch({ type: IS_FETCHING });
+   //find_pets_py();
     return fetch("http://localhost:5000/pets/")
       .then((response) => response.json())
       .then((json) => {
@@ -95,3 +98,19 @@ export function getPets(){
       });
   };
 }
+
+export function scrapeWebByLocation(city){
+  return function (dispatch) {
+    dispatch({ type: IS_FETCHING });
+fetch(`http://localhost:5000/find_pets_py/${city}`)
+  .then((response) => response.json())
+  .then((json) => {
+    dispatch({ type: PET_PYTHON_GET, payload: json });
+  })
+  .catch((error) => {
+    console.error("Error:", error);
+    dispatch({ type: PET_ERROR });
+  });
+};
+}
+

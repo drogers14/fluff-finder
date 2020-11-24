@@ -48,13 +48,15 @@ const FluffForm = ({ ...props }) => {
   const onDrop = picture => {
     setPicture([...pictures, picture]);
     console.log('picture', picture)
+    handleSubmit(picture)
+    console.log('pictures[0]', pictures[0])
   };
 
-  handleSubmit = (picture) => {
+  const handleSubmit = (picture) => {
     //e.preventDefault();
-    //console.log(this.state);
+    console.log('pic submit function', picture);
     //let form_data = new FormData();
-    
+    console.log(picture[0].name)
     fetch("http://localhost:5000/images/plus/", {
       method: "POST",
       headers: {
@@ -63,20 +65,25 @@ const FluffForm = ({ ...props }) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        data: newImage,
+        name: picture[0].name,
+        img: picture[0],
+        desc:'testingimage',
       })
+    })
         .then(res => {
+          console.log(picture)
           console.log(res.data);
         })
         .catch(err => console.log(err))
-  };
+  
+}
 
   return (
     <>
       <Box justify="center" align="center">
         <Header level={1}> Submit a Fluff </Header>
       </Box>
-      {props.submitPetError && <Text>Error</Text>}
+      {props.submitPetError && <Text color="red">Error</Text>}
       {props.isFetching && <Loading />}
       {props.submitPetSuccess && <Success />}
       {!props.isFetching && !props.submitPetSuccess &&
@@ -84,14 +91,16 @@ const FluffForm = ({ ...props }) => {
         justify="center"
         align="center"
         pad="small"
-        background={{ color: "brand", opacity: true }}
       >
         <Form
           value={value}
           onChange={(nextValue) => setValue(nextValue)}
           onSubmit={({ value: nextValue }) => {
-            console.log(nextValue);
+            //console.log(nextValue, pictures[0]);
+            console.log('racist bitch!');
+            console.log('pictures[0]?: ', pictures[0]);
             props.submitPet(nextValue);
+            handleSubmit(pictures[0]);
           }}
         >
           <FormField label="Name" name="name" required>
@@ -148,36 +157,26 @@ const FluffForm = ({ ...props }) => {
               size="small"
             />
           </FormField>
-          <Box
-            background="#d81159"
-            align="center"
-            pad="small"
-            onClick={() => {
-              console.log("uploading...");
-            }}
-          >
-            <Text>Upload Image</Text>
-            <Box>
-              <Upload background="#d81159" />
-            </Box>
-          </Box>
+          <Box background={{ color: "brand", opacity: true }}>
           <ImageUploader
-        upload={<Button label="pls?"/>}
+          background={{ color: "brand", opacity: true }}
                 withIcon={true}
                 withPreview={true}
                 buttonText='Choose images'
-                onChange={onDrop}
+                onChange={
+                  onDrop
+                }
                 imgExtension={['.jpg', '.gif', '.png', '.gif']}
                 maxFileSize={5242880}
             />
+            </Box>
           <Box gap="small" direction="row" pad="small">
             <Button color="#D81159" label="Cancel" />
             <Button type="submit" color="#D81159" primary label="Continue" />
           </Box>
         </Form>
         
-        );
-      </Box>
+              </Box>
 }
     </>
   );

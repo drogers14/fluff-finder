@@ -22,4 +22,19 @@ router.route('/').get((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+router.put('/login', (req, res) => {
+const user = req.body.user;
+user.loggedin = true;
+
+console.log(user);
+
+users.update({"_id": user._id}),
+{$set : {"loggedin":true}}
+//User.find()
+
+/*user.save()
+.then(()=> res.json('User added!'))
+.catch(err => res.status(400).json('Error: ' + err))
+*/
+});
 module.exports = router;

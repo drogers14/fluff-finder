@@ -71,7 +71,7 @@ function App({ ...props }) {
 
           <Route path="/" >
           <Box justify="center" align="center" background="#fbb02d">
-          <Announcer />
+         <Announcer /> 
         </Box>
         <Cards />
         </Route>
